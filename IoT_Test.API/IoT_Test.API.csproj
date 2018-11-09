@@ -190,6 +190,10 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Migrations\201811091947018_InitialMigration.cs" />
+    <Compile Include="Migrations\201811091947018_InitialMigration.Designer.cs">
+      <DependentUpon>201811091947018_InitialMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Database.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -288,6 +292,11 @@
       <Project>{A3977721-C8CC-4048-8323-EB0F27342B38}</Project>
       <Name>ClassLibrary</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201811091947018_InitialMigration.resx">
+      <DependentUpon>201811091947018_InitialMigration.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
