@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClassLibrary;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -9,31 +10,31 @@ namespace IoT_Test.API.Controllers
 {
     public class ValuesController : ApiController
     {
-        // GET api/values
-        public IEnumerable<string> Get()
+        private AppDatabase dbContext;
+
+        public ValuesController()
         {
-            return new string[] { "value1", "value2" };
+            dbContext = new AppDatabase();
         }
+
 
         // GET api/values/5
-        public string Get(int id)
+        [HttpGet]
+        public IHttpActionResult Get()
         {
-            return "value";
+            var message = dbContext.Messages.Last();
+            return Ok(message);
         }
-
+        
         // POST api/values
-        public void Post([FromBody]string value)
+        [HttpPost]
+        public IHttpActionResult Post(Message message)
         {
+            dbContext.Messages.Add(message);
+            dbContext.SaveChanges();
+            return Created(new Uri(Request.RequestUri + "/" + message.Id), message);
         }
 
-        // PUT api/values/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/values/5
-        public void Delete(int id)
-        {
-        }
+  
     }
 }

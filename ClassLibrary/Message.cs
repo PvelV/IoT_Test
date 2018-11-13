@@ -10,10 +10,10 @@ namespace ClassLibrary
         public DateTime DateTime { get; set; }
         public int Value { get; set; }
 
-        public Message()
+        public Message(DateTime dateTime, int value)
         {
-            DateTime = DateTime.Now;
-            Value = new Random().Next(0, 100);
+            DateTime = dateTime;
+            Value = value;
         }
     }
 }

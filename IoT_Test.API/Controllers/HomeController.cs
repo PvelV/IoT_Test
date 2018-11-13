@@ -17,6 +17,7 @@ namespace IoT_Test.API.Controllers
         {
             ViewBag.Title = "Home Page";
 
+    
             return View();
         }
     }

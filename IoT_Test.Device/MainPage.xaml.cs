@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Devices.Gpio;
@@ -15,7 +17,6 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace IoT_Test.Device
@@ -26,10 +27,7 @@ namespace IoT_Test.Device
     public sealed partial class MainPage : Page
     {
 
-        private const int LED_PIN = 5;
-        private GpioPin pin;
-        private GpioPinValue pinValue;
-        private DispatcherTimer timer;
+      
 
         private static readonly HttpClient client = new HttpClient();
 
@@ -37,57 +35,30 @@ namespace IoT_Test.Device
         {
             this.InitializeComponent();
 
+            var myContent = JsonConvert.SerializeObject(new { DateTime = DateTime.Now, Value = 17 });
 
-            var response = WebRequest();
+            var buffer = System.Text.Encoding.UTF8.GetBytes(myContent);
+            var byteContent = new ByteArrayContent(buffer);
+            byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-            timer = new DispatcherTimer();
 
-            timer.Interval = TimeSpan.FromMilliseconds(500);
-            timer.Tick += Timer_Tick;
-            InitGPIO();
-            if (pin != null)
-            {
-                timer.Start();
-            }
+            client.PostAsync(@"https://ipis2.azurewebsites.net/api/values", byteContent);
+
         }
 
-        private async Task<HttpResponseMessage> WebRequest()
+
+
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            return await client.GetAsync("http://85.71.208.253:52560");
+
+            var myContent = JsonConvert.SerializeObject(new { DateTime = DateTime.Now, Value = (int)TemperatureSlider.Value });
+
+            var buffer = System.Text.Encoding.UTF8.GetBytes(myContent);
+            var byteContent = new ByteArrayContent(buffer);
+            byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+
+            client.PostAsync(@"https://ipis2.azurewebsites.net/api/values", byteContent);
         }
-
-        private void InitGPIO()
-        {
-            var gpio = GpioController.GetDefault();
-
-            // Show an error if there is no GPIO controller
-            if (gpio == null)
-            {
-                pin = null;
-                return;
-            }
-
-            pin = gpio.OpenPin(LED_PIN);
-            pinValue = GpioPinValue.High;
-            pin.Write(pinValue);
-            pin.SetDriveMode(GpioPinDriveMode.Output);
-
-
-        }
-
-        private void Timer_Tick(object sender, object e)
-        {
-            if (pinValue == GpioPinValue.High)
-            {
-                pinValue = GpioPinValue.Low;
-                pin.Write(pinValue);
-            }
-            else
-            {
-                pinValue = GpioPinValue.High;
-                pin.Write(pinValue);
-            }
-        }
-
     }
 }
