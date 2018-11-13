@@ -1,44 +1,36 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
 using System.Threading.Tasks;
-using Windows.Devices.Gpio;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 
-namespace IoT_Test.Device
+namespace IoT_Test.HWreplacement
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public sealed partial class MainPage : Page
+    public partial class MainWindow : Window
     {
-
-      
-
         private readonly HttpClient client;
 
-        public MainPage()
-        {
-            this.InitializeComponent();
 
+        public MainWindow()
+        {
+            InitializeComponent();
             client = new HttpClient();
         }
-
-
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -52,5 +44,10 @@ namespace IoT_Test.Device
 
             client.PostAsync(@"https://ipis2.azurewebsites.net/api/values", byteContent);
         }
+
+
+
+
+
     }
 }

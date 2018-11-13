@@ -14,6 +14,12 @@ namespace ClassLibrary
         {
             DateTime = dateTime;
             Value = value;
+
+        }
+
+        public Message()
+        {
+
         }
     }
 }

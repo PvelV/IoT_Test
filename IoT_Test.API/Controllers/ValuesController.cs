@@ -22,19 +22,24 @@ namespace IoT_Test.API.Controllers
         [HttpGet]
         public IHttpActionResult Get()
         {
-            var message = dbContext.Messages.Last();
+            var messages = dbContext.Messages.AsEnumerable();
+            var c = dbContext.Messages.Count();
+            var message = messages.LastOrDefault();
+
             return Ok(message);
         }
-        
+
         // POST api/values
         [HttpPost]
         public IHttpActionResult Post(Message message)
         {
             dbContext.Messages.Add(message);
             dbContext.SaveChanges();
+
+            var m = dbContext.Messages.Count();
             return Created(new Uri(Request.RequestUri + "/" + message.Id), message);
         }
 
-  
+
     }
 }

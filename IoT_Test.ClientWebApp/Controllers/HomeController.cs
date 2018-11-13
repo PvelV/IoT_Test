@@ -18,8 +18,7 @@ namespace IoT_Test.ClientWebApp.Controllers
         public ActionResult Index()
         {
             var messages = dbContext.Messages.ToList();
-            return Json(messages, JsonRequestBehavior.AllowGet);
-            return View();
+            return View("IoTView", new ViewModels.IoTVM { Value = messages.LastOrDefault().Value });
         }
 
         public ActionResult About()
